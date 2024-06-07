@@ -42,6 +42,10 @@
 //#define SDLMAIN
 #endif
 
+#ifdef __SWITCH__
+#include <switch.h>
+#endif
+
 #ifdef SDLMAIN
 #include "SDL_main.h"
 #elif defined(FORCESDLMAIN)
@@ -220,6 +224,69 @@ static void walk_exception_stack(srb2::String& accum, const std::exception& ex, 
 #if defined (__GNUC__) && (__GNUC__ >= 4)
 #pragma GCC diagnostic ignored "-Wmissing-noreturn"
 #endif
+
+// ============================================================================
+// SWITCH DEBUGGING CODE
+// ============================================================================
+
+#ifdef ENABLE_NXLINK
+#define TRACE(fmt,...) ((void)0)
+static int s_nxlinkSock = -1;
+
+static void initNxLink()
+{
+    if (R_FAILED(socketInitializeDefault()))
+        return;
+
+    s_nxlinkSock = nxlinkStdio();
+    if (s_nxlinkSock >= 0)
+        TRACE("printf output now goes to nxlink server");
+    else
+        socketExit();
+}
+
+static void deinitNxLink()
+{
+    if (s_nxlinkSock >= 0)
+    {
+        close(s_nxlinkSock);
+        socketExit();
+        s_nxlinkSock = -1;
+    }
+}
+#endif
+
+// ============================================================================
+
+#ifdef __SWITCH__
+extern "C" void userAppInit()
+{
+	// heyjoeway: Allows loading in the background
+	// This is eventually turned off by D_SRB2Loop
+	appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
+	appletInitializeGamePlayRecording();
+
+	csrngInitialize();
+
+	#ifdef ENABLE_NXLINK
+	initNxLink();
+	#else
+	socketInitializeDefault(); // nxlink does this, needed for online support
+	#endif
+}
+
+extern "C" void userAppExit()
+{
+	csrngExit();
+	#ifdef ENABLE_NXLINK
+    deinitNxLink();
+	#else
+	socketExit(); // nxlink does this, needed for online support
+	#endif
+}
+#endif
+
+// ============================================================================
 
 #ifdef FORCESDLMAIN
 int SDL_main(int argc, char **argv)

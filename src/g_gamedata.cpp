@@ -276,6 +276,12 @@ void srb2::save_ng_gamedata()
 	{
 		try
 		{
+			#ifdef __SWITCH__
+			if (savepath != baksavepath && fs::exists(baksavepath))
+			{
+				fs::remove(baksavepath);
+			}
+			#endif
 			fs::rename(savepath, baksavepath);
 		}
 		catch (const fs::filesystem_error& ex)

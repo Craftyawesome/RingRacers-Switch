@@ -14,6 +14,8 @@
 
 #if defined (__linux__) || defined (__FreeBSD__)
 #include <sys/random.h>
+#elif defined (__SWITCH__)
+#include <switch.h>
 #elif defined (_WIN32)
 #define _CRT_RAND_S
 #include <cstdlib>
@@ -101,6 +103,8 @@ csprng
 	CCRandomGenerateBytes(buffer, size);
 #elif defined (__FreeBSD__) || defined (__NetBSD__) || defined (__OpenBSD__)
 	arc4random_buf(buffer, size);
+#elif defined __SWITCH__
+	csrngGetRandomBytes(buffer, size);
 #endif
 }
 

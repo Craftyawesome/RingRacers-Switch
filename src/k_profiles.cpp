@@ -339,6 +339,12 @@ void PR_SaveProfiles(void)
 	{
 		try
 		{
+			#ifdef __SWITCH__
+			if (realpath != bakpath && fs::exists(fs::path(static_cast<std::string_view>(bakpath))))
+			{
+				fs::remove(fs::path(static_cast<std::string_view>(bakpath)));
+			}
+			#endif
 			fs::rename(fs::path(static_cast<std::string_view>(realpath)), fs::path(static_cast<std::string_view>(bakpath)));
 		}
 		catch (const fs::filesystem_error& ex)

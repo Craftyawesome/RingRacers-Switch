@@ -146,6 +146,30 @@ static std::unique_ptr<rhi::Rhi> g_rhi;
 static uint32_t g_rhi_generation = 0;
 
 // windowed video modes from which to choose from.
+#ifdef __SWITCH__
+static INT32 windowedModes[MAXWINMODES][2] =
+{
+	{1920,1080}, // 1.66
+	{1680,1050}, // 1.60,5.25
+	{1600, 900}, // 1.66
+	{1366, 768}, // 1.66
+	{1440, 900}, // 1.60,4.50
+	{1280,1024}, // 1.33?
+	{1280, 960}, // 1.33,4.00
+	{1280, 800}, // 1.60,4.00
+	{1280, 720}, // 1.66
+	{1152, 864}, // 1.33,3.60
+	{1024,1024}, // SPECIAL, for snapshot taker
+	{1024, 768}, // 1.33,3.20
+	{ 800, 600}, // 1.33,2.50
+	{ 800, 450}, // 1.66
+	{ 640, 480}, // 1.33,2.00
+	{ 708, 400}, // ~1.66
+	{ 640, 400}, // 1.60,2.00
+	{ 320, 240}, // 1.33,1.00
+	{ 320, 200}, // 1.60,1.00
+};
+#else
 static INT32 windowedModes[MAXWINMODES][2] =
 {
 	{1920,1200}, // 1.60,6.00
@@ -168,6 +192,7 @@ static INT32 windowedModes[MAXWINMODES][2] =
 	{ 320, 240}, // 1.33,1.00
 	{ 320, 200}, // 1.60,1.00
 };
+#endif
 
 static void Impl_VideoSetupBuffer(void);
 static SDL_bool Impl_CreateWindow(SDL_bool fullscreen);
@@ -221,12 +246,17 @@ static void SDLSetMode(int width, int height, SDL_bool fullscreen, SDL_bool repo
 				SDL_SetWindowFullscreen(window, 0);
 			}
 			// Reposition window only in windowed mode
+			#ifdef __SWITCH__
+			SDL_SetWindowSize(window, 1920, 1080);
+			SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+			#else
 			SDL_SetWindowSize(window, width, height);
 			if (reposition)
 			{
 				ValidateDisplay();
 				CenterWindow();
 			}
+			#endif
 		}
 	}
 	else
@@ -1327,6 +1357,9 @@ static SDL_bool Impl_CreateContext(void)
 		if (!g_legacy_gl_context)
 		{
 			SDL_GL_ResetAttributes();
+			#ifdef __SWITCH__
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+			#endif
 			g_legacy_gl_context = SDL_GL_CreateContext(window);
 		}
 		if (g_legacy_gl_context == NULL)
@@ -1345,6 +1378,9 @@ static SDL_bool Impl_CreateContext(void)
 	if (!sdlglcontext)
 	{
 		SDL_GL_ResetAttributes();
+		#ifdef __SWITCH__
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+		#endif
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 		sdlglcontext = SDL_GL_CreateContext(window);

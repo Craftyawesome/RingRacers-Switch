@@ -151,6 +151,10 @@ typedef LPVOID (WINAPI *p_MapViewOfFile) (HANDLE, DWORD, DWORD, DWORD, SIZE_T);
 #include <cpptrace/cpptrace.hpp>
 #endif
 
+#ifdef __SWITCH__
+#include <switch.h>
+#endif
+
 // Locations for searching for bios.pk3
 #if defined (__unix__) || defined(__APPLE__) || defined (UNIXCOMMON)
 #define DEFAULTWADLOCATION1 "/usr/local/share/games/RingRacers"
@@ -1217,7 +1221,15 @@ boolean I_HasOpenURL()
 
 void I_OpenURL(const char *data)
 {
-	#if (SDL_VERSION_ATLEAST(2, 0, 14))
+	#ifdef __SWITCH__
+		WebCommonConfig config;
+		Result rc;
+
+		rc = webPageCreate(&config, data);
+		if (R_SUCCEEDED(rc))
+			rc = webConfigShow(&config, NULL);
+
+	#elif (SDL_VERSION_ATLEAST(2, 0, 14))
 		SDL_OpenURL(data);
 	#else
 		(void)data;
@@ -2229,7 +2241,7 @@ char *I_GetUserName(void)
 INT32 I_mkdir(const char *dirname, INT32 unixright)
 {
 //[segabor]
-#if defined (__unix__) || defined(__APPLE__) || defined (UNIXCOMMON) || defined (__CYGWIN__)
+#if defined (__unix__) || defined(__APPLE__) || defined (UNIXCOMMON) || defined (__CYGWIN__) || defined (__SWITCH__)
 	return mkdir(dirname, unixright);
 #elif defined (_WIN32)
 	UNREFERENCED_PARAMETER(unixright); /// \todo should implement ntright under nt...
@@ -2252,7 +2264,9 @@ char *I_GetEnv(const char *name)
 
 INT32 I_PutEnv(char *variable)
 {
-#ifdef NEED_SDL_GETENV
+#ifdef __SWITCH__
+	return SDL_setenv(variable, "1", 1);
+#elif defined(NEED_SDL_GETENV)
 	return SDL_putenv(variable);
 #else
 	return putenv(variable);

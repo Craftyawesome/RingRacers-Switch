@@ -11,6 +11,8 @@
 #  include <windows.h>
 #  include <malloc.h>
 #  include "TracyUwp.hpp"
+#elif defined __SWITCH__
+#  include <switch.h>
 #else
 #  include <pthread.h>
 #  include <string.h>
@@ -83,6 +85,10 @@ TRACY_API uint32_t GetThreadHandleImpl()
     return getthrid();
 #elif defined __QNX__
     return (uint32_t) gettid();
+#elif defined __SWITCH__
+    uint64_t id;
+    svcGetThreadId(&id, threadGetCurHandle());
+    return uint32_t(id);
 #elif defined __EMSCRIPTEN__
     // Not supported, but let it compile.
     return 0;

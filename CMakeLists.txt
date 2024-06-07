@@ -90,6 +90,8 @@ option(SRB2_CONFIG_FORCE_NO_MS_BITFIELDS "Compile without -mno-ms-bitfields comp
 option(SRB2_CONFIG_PROFILEMODE "Compile for profiling (GCC only)." OFF)
 option(SRB2_CONFIG_TRACY "Compile with Tracy profiling enabled" OFF)
 option(SRB2_CONFIG_ASAN "Compile with AddressSanitizer (libasan)." OFF)
+option(CONFIG_LTO OFF)
+option(SRB2_CONFIG_NXLINK "Compile with NXLINK (Switch only)." OFF)
 set(SRB2_CONFIG_ASSET_DIRECTORY "" CACHE PATH "Path to directory that contains all asset files for the installer. If set, assets will be part of installation and cpack.")
 
 # Enable CCache
@@ -106,6 +108,12 @@ if("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL Windows)
 			message(WARNING "USE_CCACHE was set but ccache is not found (set CCACHE_TOOL_PATH)")
 		endif()
 	endif()
+endif()
+
+if (CONFIG_LTO)
+	set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+	add_compile_options(-flto-partition=one)
+	add_link_options(-flto-partition=one)
 endif()
 
 # Dependencies

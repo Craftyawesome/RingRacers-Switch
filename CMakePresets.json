@@ -158,6 +158,42 @@
 			"inherits": [ "__release", "__ninja" ]
 		},
 		{
+			"name": "switch-debug",
+			"hidden": false,
+			"binaryDir": "build/${presetName}",
+			"inherits": ["__debug", "__ninja"],
+			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+			"cacheVariables": {
+				"SRB2_CONFIG_ENABLE_WEBM_MOVIES": false,
+				"SRB2_CONFIG_ENABLE_DISCORDRPC": false,
+				"SRB2_CONFIG_NXLINK": true
+			}
+		},
+		{
+			"name": "switch-develop",
+			"hidden": false,
+			"binaryDir": "build/${presetName}",
+			"inherits": ["__develop", "__ninja"],
+			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+			"cacheVariables": {
+				"SRB2_CONFIG_ENABLE_WEBM_MOVIES": false,
+				"SRB2_CONFIG_ENABLE_DISCORDRPC": false,
+				"SRB2_CONFIG_NXLINK": true
+			}
+		},
+		{
+			"name": "switch-release",
+			"hidden": false,
+			"binaryDir": "build/${presetName}",
+			"inherits": ["__release", "__ninja"],
+			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+			"cacheVariables": {
+				"SRB2_CONFIG_ENABLE_WEBM_MOVIES": false,
+				"SRB2_CONFIG_ENABLE_DISCORDRPC": false,
+				"CONFIG_LTO": true
+			}
+		},
+		{
 			"name": "ninja-testers",
 			"hidden": false,
 			"binaryDir": "build/${presetName}",
@@ -296,6 +332,18 @@
 		{
 			"name": "ninja-vcpkg-release",
 			"configurePreset": "ninja-vcpkg-release"
+		},
+		{
+			"name": "switch-debug",
+			"configurePreset": "switch-debug"
+		},
+		{
+			"name": "switch-develop",
+			"configurePreset": "switch-develop"
+		},
+		{
+			"name": "switch-release",
+			"configurePreset": "switch-release"
 		},
 		{
 			"name": "ninja-x86_mingw_static_vcpkg-debug",

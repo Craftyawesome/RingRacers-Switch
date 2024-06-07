@@ -17,6 +17,11 @@
 ///        This protocol uses a mix of "goback n" and "selective repeat" implementation
 ///        The NOTHING packet is sent when connection is idle to acknowledge packets
 
+#ifdef __SWITCH__
+#define _POSIX_C_SOURCE 200809L
+#include <string.h>
+#endif
+
 #include <algorithm>
 
 #include "doomdef.h"
@@ -1129,6 +1134,8 @@ boolean HSendPacket(INT32 node, boolean reliable, UINT8 acknum, size_t packetlen
 		netbuffer->ackreturn = 0;
 	if (reliable)
 	{
+		// heyjoeway: hack way? hack way!
+		#ifndef __SWITCH__
 		if (I_NetCanSend && !I_NetCanSend())
 		{
 			if (netbuffer->packettype < PT_CANFAIL)
@@ -1137,7 +1144,9 @@ boolean HSendPacket(INT32 node, boolean reliable, UINT8 acknum, size_t packetlen
 			DEBFILE("HSendPacket: Out of bandwidth\n");
 			return false;
 		}
-		else if (!GetFreeAcknum(&netbuffer->ack, false))
+		else
+		#endif
+		if (!GetFreeAcknum(&netbuffer->ack, false))
 			return false;
 	}
 	else

@@ -739,6 +739,9 @@ if(SRB2_CONFIG_ASAN)
 	target_compile_options(SRB2SDL2 PRIVATE -fsanitize=address)
 	target_link_options(SRB2SDL2 PRIVATE -fsanitize=address)
 endif()
+if(SRB2_CONFIG_NXLINK)
+	target_compile_options(SRB2SDL2 PRIVATE -DENABLE_NXLINK)
+endif()
 
 add_subdirectory(audio)
 add_subdirectory(core)
@@ -950,4 +953,14 @@ if(SRB2_CONFIG_ENABLE_CLANG_TIDY_C)
 endif()
 if(SRB2_CONFIG_ENABLE_CLANG_TIDY_CXX)
 	target_set_default_clang_tidy(SRB2SDL2 CXX "-*,clang-analyzer-*,modernize-*")
+endif()
+
+if ("${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch")
+	target_link_libraries(SRB2SDL2 PRIVATE -lnx)
+    add_compile_definitions(NO_IPV6)
+    add_custom_command(TARGET SRB2SDL2 POST_BUILD
+        COMMAND echo "Running post-build steps for Nintendo Switch..."
+        COMMAND ${DEVKITPRO}/tools/bin/nacptool --create \"Dr. Robotnik's Ring Racers\" \"Kart Krew, Craftyawesome\" \"${SRB2_VERSION}\" ${PROJECT_BINARY_DIR}/bin/details.nacp
+        COMMAND ${DEVKITPRO}/tools/bin/elf2nro $<TARGET_FILE:SRB2SDL2> ${PROJECT_BINARY_DIR}/bin/RingRacers.nro --icon=${PROJECT_SOURCE_DIR}/switch_icon.jpg --nacp=${PROJECT_BINARY_DIR}/bin/details.nacp
+    )
 endif()

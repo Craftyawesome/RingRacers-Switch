@@ -32,6 +32,10 @@
 #include <malloc.h>
 #endif
 
+#ifdef __SWITCH__
+#include <switch.h>
+#endif
+
 #include <time.h>
 
 #include "doomdef.h"
@@ -902,6 +906,10 @@ void D_SRB2Loop(void)
 	S_SetMasterVolume();
 	S_SetMusicVolume();
 	S_SetSfxVolume();
+
+	#ifdef __SWITCH__
+	appletSetFocusHandlingMode(AppletFocusHandlingMode_SuspendHomeSleep);
+	#endif
 
 	for (;;)
 	{
