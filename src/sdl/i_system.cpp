@@ -2052,7 +2052,9 @@ char *I_GetEnv(const char *name)
 
 INT32 I_PutEnv(char *variable)
 {
-#ifdef NEED_SDL_GETENV
+#ifdef __SWITCH__
+	return SDL_setenv(variable, "1", 1);
+#elif defined(NEED_SDL_GETENV)
 	return SDL_putenv(variable);
 #else
 	return putenv(variable);

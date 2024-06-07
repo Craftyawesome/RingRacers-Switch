@@ -22,6 +22,15 @@
 extern "C" {
 #endif
 
+#ifdef __SWITCH__
+#include <strings.h>
+#endif
+
+#ifndef M_PI
+#   define M_PI 3.1415926535897932384626433832
+#endif
+
+
 #ifdef _WIN32
 //#define WIN32_LEAN_AND_MEAN
 #define RPC_NO_WINDOWS_H
@@ -104,7 +113,7 @@ typedef long ssize_t;
 	#define strncasecmp             strnicmp
 	#define strcasecmp              strcmpi
 #endif
-#if (defined (__unix__) && !defined (MSDOS)) || defined(__APPLE__) || defined (UNIXCOMMON)
+#if (defined (__unix__) && !defined (MSDOS)) || defined(__APPLE__) || defined (UNIXCOMMON) || defined (__SWITCH__)
 	#undef stricmp
 	#define stricmp(x,y) strcasecmp(x,y)
 	#undef strnicmp
@@ -117,7 +126,7 @@ char *nongnu_strcasestr(const char *in, const char *what);
 #endif
 #define stristr strcasestr
 
-#if defined (PC_DOS) || defined (_WIN32) || defined (__HAIKU__)
+#if defined (PC_DOS) || defined (_WIN32) || defined (__HAIKU__) || defined (__SWITCH__)
 #define HAVE_DOSSTR_FUNCS
 #endif
 
@@ -133,6 +142,11 @@ char *nongnu_strcasestr(const char *in, const char *what);
 #ifndef HAVE_DOSSTR_FUNCS
 int strupr(char *n); // from dosstr.c
 int strlwr(char *n); // from dosstr.c
+#endif
+
+#ifdef __SWITCH__
+char *strupr(char *n); // from dosstr.c
+char *strlwr(char *n); // from dosstr.c
 #endif
 
 #include <stddef.h> // for size_t
@@ -162,12 +176,17 @@ typedef int32_t boolean;
 #define boolean BOOL
 #endif
 
+#if defined(__SWITCH__) // defined(__GNUC__)?
+	#include <stdbool.h>  //_bool_true_false_are_defined?
+	//#define boolean bool
+#else
 #ifndef __cplusplus
 #ifndef _WIN32
 enum {false = 0, true = 1};
 #else
 #define false FALSE
 #define true TRUE
+#endif
 #endif
 #endif
 
