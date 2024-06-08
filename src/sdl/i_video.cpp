@@ -1398,6 +1398,9 @@ static SDL_bool Impl_CreateContext(void)
 		if (!g_legacy_gl_context)
 		{
 			SDL_GL_ResetAttributes();
+			#ifdef __SWITCH__
+			SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+			#endif
 			g_legacy_gl_context = SDL_GL_CreateContext(window);
 		}
 		if (g_legacy_gl_context == NULL)
