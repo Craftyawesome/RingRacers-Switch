@@ -193,6 +193,10 @@ static void SDLSetMode(int width, int height, SDL_bool fullscreen, SDL_bool repo
 				SDL_SetWindowFullscreen(window, 0);
 			}
 			// Reposition window only in windowed mode
+			#ifdef __SWITCH__
+			SDL_SetWindowSize(window, 1920, 1080);
+			SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+			#else
 			SDL_SetWindowSize(window, width, height);
 			if (reposition)
 			{
@@ -201,6 +205,7 @@ static void SDLSetMode(int width, int height, SDL_bool fullscreen, SDL_bool repo
 					SDL_WINDOWPOS_CENTERED_DISPLAY(SDL_GetWindowDisplayIndex(window))
 				);
 			}
+			#endif
 		}
 	}
 	else
@@ -1411,6 +1416,9 @@ static SDL_bool Impl_CreateContext(void)
 	if (!sdlglcontext)
 	{
 		SDL_GL_ResetAttributes();
+		#ifdef __SWITCH__
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
+		#endif
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 		sdlglcontext = SDL_GL_CreateContext(window);
