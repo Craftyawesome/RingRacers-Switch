@@ -323,6 +323,12 @@ void PR_SaveProfiles(void)
 
 	if (fs::exists(realpath))
 	{
+		#ifdef __SWITCH__
+		if (fs::exists(bakpath))
+		{
+			fs::remove(bakpath);
+		}
+		#endif
 		try
 		{
 			fs::rename(realpath, bakpath);
