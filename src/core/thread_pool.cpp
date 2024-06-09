@@ -299,7 +299,12 @@ std::unique_ptr<ThreadPool> srb2::g_main_threadpool;
 void I_ThreadPoolInit(void)
 {
 	SRB2_ASSERT(g_main_threadpool == nullptr);
+	#ifdef __SWITCH__
+	size_t thread_count = 3;
+	#else
 	size_t thread_count = std::min(static_cast<unsigned int>(9), std::thread::hardware_concurrency());
+	#endif
+	SRB2_ASSERT(thread_count > 0);
 	if (thread_count > 1)
 	{
 		// The main thread will act as a worker when waiting for pool idle
