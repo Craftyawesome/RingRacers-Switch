@@ -127,6 +127,17 @@
 			}
 		},
 		{
+			"name": "switch-debug",
+			"hidden": false,
+			"binaryDir": "build/${presetName}",
+			"inherits": ["__debug", "__ninja"],
+			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
+			"cacheVariables": {
+				"SRB2_CONFIG_ENABLE_WEBM_MOVIES": false,
+				"SRB2_CONFIG_ENABLE_DISCORDRPC": false
+			}
+		},
+		{
 			"name": "ninja-testers",
 			"hidden": false,
 			"binaryDir": "build/${presetName}",
@@ -213,6 +224,10 @@
 		{
 			"name": "switch-release",
 			"configurePreset": "switch-release"
+		},
+		{
+			"name": "switch-debug",
+			"configurePreset": "switch-debug"
 		},
 		{
 			"name": "ninja-x86_mingw_static_vcpkg-debug",
