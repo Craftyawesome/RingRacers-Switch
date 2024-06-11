@@ -311,6 +311,8 @@ extern "C" void userAppInit()
 	appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
 	appletInitializeGamePlayRecording();
 
+	csrngInitialize();
+
 	#ifdef ENABLE_NXLINK
 	initNxLink();
 	#else
@@ -320,6 +322,7 @@ extern "C" void userAppInit()
 
 extern "C" void userAppExit()
 {
+	csrngExit();
 	#ifdef ENABLE_NXLINK
     deinitNxLink();
 	#else

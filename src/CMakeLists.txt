@@ -647,6 +647,7 @@ if("${CMAKE_SYSTEM_NAME}" STREQUAL Windows AND NOT "${SRB2_CONFIG_INTERNAL_LIBRA
 endif()
 
 if ("${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch")
+	target_link_libraries(SRB2SDL2 PRIVATE -lnx)
     add_compile_definitions(NO_IPV6)
     add_custom_command(TARGET SRB2SDL2 POST_BUILD
         COMMAND echo "Running post-build steps for Nintendo Switch..."
