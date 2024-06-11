@@ -760,11 +760,17 @@ void M_SaveConfig(const char *filename)
 
 		try
 		{
+			#ifdef __SWITCH__
+			if (real != tmp && fs::exists(real))
+			{
+				fs::remove(real);
+			}
+			#endif
 			fs::rename(tmp, real);
 		}
 		catch (const fs::filesystem_error& ex)
 		{
-			CONS_Alert(CONS_ERROR, M_GetText("Failed to move temp config file to real destination\n"));
+			CONS_Alert(CONS_ERROR, "Failed to move temp config file to real destination. %s\n", ex.what());
 		}
 	}
 }
