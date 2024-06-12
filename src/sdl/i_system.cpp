@@ -140,6 +140,10 @@ typedef LPVOID (WINAPI *p_MapViewOfFile) (HANDLE, DWORD, DWORD, DWORD, SIZE_T);
 #define UNIXBACKTRACE
 #endif
 
+#ifdef __SWITCH__
+#include <switch.h>
+#endif
+
 // Locations for searching for bios.pk3
 #if defined (__unix__) || defined(__APPLE__) || defined (UNIXCOMMON)
 #define DEFAULTWADLOCATION1 "/usr/local/share/games/RingRacers"
@@ -1024,7 +1028,15 @@ boolean I_HasOpenURL()
 
 void I_OpenURL(const char *data)
 {
-	#if (SDL_VERSION_ATLEAST(2, 0, 14))
+	#ifdef __SWITCH__
+		WebCommonConfig config;
+		Result rc;
+
+		rc = webPageCreate(&config, data);
+		if (R_SUCCEEDED(rc))
+			rc = webConfigShow(&config, NULL);
+
+	#elif (SDL_VERSION_ATLEAST(2, 0, 14))
 		SDL_OpenURL(data);
 	#else
 		(void)data;
