@@ -2485,7 +2485,12 @@ EXPORT void HWRAPI(DrawIndexedTriangles) (FSurfaceInfo *pSurf, FOutVector *pOutV
 	// the DrawPolygon variant of this has some code about polyflags and wrapping here but havent noticed any problems from omitting it?
 }
 
+#ifdef __SWITCH__
+// Craftyawesome: opengl on switch runs out of memory very fast (existing memory leak?). False replaces some crashes with buggy rendering.
+static const boolean gl_ext_arb_vertex_buffer_object = false;
+#else
 static const boolean gl_ext_arb_vertex_buffer_object = true;
+#endif
 
 #define NULL_VBO_VERTEX ((gl_skyvertex_t*)NULL)
 #define sky_vbo_x (gl_ext_arb_vertex_buffer_object ? &NULL_VBO_VERTEX->x : &sky->data[0].x)
