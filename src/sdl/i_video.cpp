@@ -144,6 +144,29 @@ static std::unique_ptr<rhi::Rhi> g_rhi;
 static uint32_t g_rhi_generation = 0;
 
 // windowed video modes from which to choose from.
+#ifdef __SWITCH__
+static INT32 windowedModes[MAXWINMODES][2] =
+{
+	{1920,1080}, // 1.66
+	{1680,1050}, // 1.60,5.25
+	{1600, 900}, // 1.66
+	{1366, 768}, // 1.66
+	{1440, 900}, // 1.60,4.50
+	{1280,1024}, // 1.33?
+	{1280, 960}, // 1.33,4.00
+	{1280, 800}, // 1.60,4.00
+	{1280, 720}, // 1.66
+	{1152, 864}, // 1.33,3.60
+	{1024, 768}, // 1.33,3.20
+	{ 800, 600}, // 1.33,2.50
+	{ 800, 450}, // 1.66
+	{ 640, 480}, // 1.33,2.00
+	{ 708, 400}, // ~1.66
+	{ 640, 400}, // 1.60,2.00
+	{ 320, 240}, // 1.33,1.00
+	{ 320, 200}, // 1.60,1.00
+};
+#else
 static INT32 windowedModes[MAXWINMODES][2] =
 {
 	{1920,1200}, // 1.60,6.00
@@ -165,6 +188,7 @@ static INT32 windowedModes[MAXWINMODES][2] =
 	{ 320, 240}, // 1.33,1.00
 	{ 320, 200}, // 1.60,1.00
 };
+#endif
 
 static void Impl_VideoSetupBuffer(void);
 static SDL_bool Impl_CreateWindow(SDL_bool fullscreen);
