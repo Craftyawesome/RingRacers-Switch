@@ -792,7 +792,16 @@ boolean preparefilemenu(boolean samedepth, boolean replayhut)
 		I_Error("preparefilemenu(): could not reallocate coredirmenu.");
 	}
 
+#ifdef __SWITCH__
+	closedir(dirhandle);
+	if (!(dirhandle = opendir(menupath))) // get directory
+	{
+		closefilemenu(true);
+		return false;
+	}
+#else
 	rewinddir(dirhandle);
+#endif
 
 	while ((pos+folderpos) < sizecoredirmenu)
 	{
