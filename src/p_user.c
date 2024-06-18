@@ -165,6 +165,15 @@ fixed_t P_ReturnThrustY(mobj_t *mo, angle_t angle, fixed_t move)
 	return FixedMul(move, FINESINE(angle));
 }
 
+// P_CanAutoPause
+// Returns true when gameplay is *allowed to be* halted even if the game isn't necessarily paused.
+// Used to prevent lag-switching on the Switch port.
+//
+boolean P_CanAutoPause(void)
+{
+	return !(netgame || modeattacking);
+}
+
 //
 // P_AutoPause
 // Returns true when gameplay should be halted even if the game isn't necessarily paused.
