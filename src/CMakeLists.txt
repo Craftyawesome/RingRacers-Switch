@@ -651,7 +651,7 @@ if ("${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch")
     add_compile_definitions(NO_IPV6)
     add_custom_command(TARGET SRB2SDL2 POST_BUILD
         COMMAND echo "Running post-build steps for Nintendo Switch..."
-        COMMAND ${DEVKITPRO}/tools/bin/nacptool --create \"Dr. Robotnik's Ring Racers\" \"Kart Krew, Craftyawesome\" \"${SRB2_VERSION}\" ${PROJECT_BINARY_DIR}/bin/details.nacp
+        COMMAND ${DEVKITPRO}/tools/bin/nacptool --create \"Dr. Robotnik's Ring Racers\" \"Kart Krew, Craftyawesome\" \"${SRB2_VERSION} r2\" ${PROJECT_BINARY_DIR}/bin/details.nacp
         COMMAND ${DEVKITPRO}/tools/bin/elf2nro $<TARGET_FILE:SRB2SDL2> ${PROJECT_BINARY_DIR}/bin/RingRacers.nro --icon=${PROJECT_SOURCE_DIR}/switch_icon.jpg --nacp=${PROJECT_BINARY_DIR}/bin/details.nacp
     )
 endif()
