@@ -10,6 +10,24 @@ Dr. Robotnik's Ring Racers is a kart racing video game originally based on the 3
 
 Ring Racers' source code is available to users under the GNU General Public License version 2.0 or higher.
 
+This is a port for the Nintendo Switch.
+
+## Install Instructions
+1. Have a switch that can run homebrew
+2. Download the zip from [releases](https://github.com/Craftyawesome/RingRacers-Switch/releases/)
+3. Extract to the root of the SD card.
+4. Start via a game (not album or another applet)
+
+## Update instructions
+Extract the new zip to the root of the SD card and overwrite any changes. Revisions for only the switch likely only need to update the nro in switch/RingRacers (see the release notes)
+
+## Notes
+- It takes a while to boot up, longer than SRB2/kart do.
+- Increase the CPU clock with something like sys-clk. It helps framerates significantly, which is needed to get modes with multiple racers to a playable framerate.
+- Legacy GL is not very stable, especially with multiple racers. Consider using software only.
+- I would recommend a resolution of 708x400 under software, and 800x450 for less complex tracks or one racer. Legacy GL can handle larger at similar framerates.
+- Buttons match the Xbox controller layout. (A and B are swapped, X and Y are swapped)
+
 ## Links
 
 - [Kart Krew Dev Website](https://www.kartkrew.org/)
@@ -64,6 +82,16 @@ After all prerequisites are set-up, configure and build using the following comm
 
     cmake --preset ninja-x86_mingw_static_vcpkg-develop
     cmake --build --preset ninja-x86_mingw_static_vcpkg-develop
+
+## Switch
+With a standard switch development enviroment and the relevant dependencies, run the follownig to generate the nro.
+
+    cmake --preset switch-release
+    cmake --build --preset switch-release 
+
+switch-develop and switch-debug are also available and have nxlink enabled by default. If you want nxlink and no LTO in the release build run this command in between configuring and building.
+
+    cmake -U CONFIG_LTO -DSRB2_CONFIG_NXLINK:BOOL=true --preset switch-release
 
 ## Contributing
 
