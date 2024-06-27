@@ -77,6 +77,7 @@ option(SRB2_CONFIG_PROFILEMODE "Compile for profiling (GCC only)." OFF)
 option(SRB2_CONFIG_TRACY "Compile with Tracy profiling enabled" OFF)
 option(SRB2_CONFIG_ASAN "Compile with AddressSanitizer (libasan)." OFF)
 option(CONFIG_LTO OFF)
+option(SRB2_CONFIG_NXLINK "Compile with NXLINK (Switch only)." OFF)
 set(SRB2_CONFIG_ASSET_DIRECTORY "" CACHE PATH "Path to directory that contains all asset files for the installer. If set, assets will be part of installation and cpack.")
 
 # Enable CCache

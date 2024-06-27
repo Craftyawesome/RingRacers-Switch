@@ -123,7 +123,8 @@
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
 			"cacheVariables": {
 				"SRB2_CONFIG_ENABLE_WEBM_MOVIES": false,
-				"SRB2_CONFIG_ENABLE_DISCORDRPC": false
+				"SRB2_CONFIG_ENABLE_DISCORDRPC": false,
+				"SRB2_CONFIG_NXLINK": true
 			}
 		},
 		{
@@ -134,7 +135,8 @@
 			"toolchainFile": "$env{DEVKITPRO}/cmake/Switch.cmake",
 			"cacheVariables": {
 				"SRB2_CONFIG_ENABLE_WEBM_MOVIES": false,
-				"SRB2_CONFIG_ENABLE_DISCORDRPC": false
+				"SRB2_CONFIG_ENABLE_DISCORDRPC": false,
+				"SRB2_CONFIG_NXLINK": true
 			}
 		},
 		{
