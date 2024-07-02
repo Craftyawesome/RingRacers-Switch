@@ -98,6 +98,8 @@ endif()
 
 if (CONFIG_LTO)
 	set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+	add_compile_options(-flto-partition=one)
+	add_link_options(-flto-partition=one)
 endif()
 
 add_subdirectory(thirdparty)
