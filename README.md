@@ -84,7 +84,7 @@ After all prerequisites are set-up, configure and build using the following comm
     cmake --build --preset ninja-x86_mingw_static_vcpkg-develop
 
 ## Switch
-With a standard switch development enviroment and the relevant dependencies, run the follownig to generate the nro.
+With a standard switch development enviroment and the relevant dependencies, run the following to generate the nro.
 
     cmake --preset switch-release
     cmake --build --preset switch-release 
