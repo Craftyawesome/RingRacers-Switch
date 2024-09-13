@@ -81,10 +81,9 @@ TRACY_API uint32_t GetThreadHandleImpl()
 #elif defined __OpenBSD__
     return getthrid();
 #elif defined __SWITCH__
-    //return threadGetCurHandle();
-    u64 id; //64, but fine since only profiling
+    uint64_t id;
     svcGetThreadId(&id, threadGetCurHandle());
-    return static_cast<uint32_t>(id);
+    return uint32_t(id);
 #elif defined __EMSCRIPTEN__
     // Not supported, but let it compile.
     return 0;
