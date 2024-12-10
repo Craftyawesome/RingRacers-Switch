@@ -5386,7 +5386,7 @@ static void HandlePacketFromPlayer(SINT8 node)
 			for (responseplayer = 0; responseplayer < MAXSPLITSCREENPLAYERS; responseplayer++)
 			{
 				int targetplayer = NodeToSplitPlayer(node, responseplayer);
-				if (targetplayer == -1)
+				if (targetplayer == -1 || targetplayer == 255)
 					continue;
 
 				if (!IsPlayerGuest(targetplayer))
