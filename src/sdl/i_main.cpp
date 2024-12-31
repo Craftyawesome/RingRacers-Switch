@@ -304,6 +304,9 @@ static void deinitNxLink()
 // ============================================================================
 
 #ifdef __SWITCH__
+
+u32 __nx_fsdev_direntry_cache_size = 4096;
+
 extern "C" void userAppInit()
 {
 	// heyjoeway: Allows loading in the background
