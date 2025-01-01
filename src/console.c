@@ -1503,6 +1503,12 @@ void CON_LogMessage(const char *msg)
 
 void CONS_Printf(const char *fmt, ...)
 {
+	//FS is super slow on switch, this saves >10s on startup
+	#ifdef __SWITCH__
+	static uint64_t count = 0;
+	if (count++ < 4400) return;
+	#endif
+
 	va_list argptr;
 	static char *txt = NULL;
 

@@ -337,7 +337,11 @@ static void *md5_finish_ctx (struct md5_ctx *ctx, void *resbuf)
 int md5_stream (FILE *stream, void *resblock)
 {
   /* Important: BLOCKSIZE must be a multiple of 64.  */
+#ifdef __SWITCH__
+#define BLOCKSIZE 524288
+#else
 #define BLOCKSIZE 4096
+#endif
   struct md5_ctx ctx;
   char buffer[BLOCKSIZE + 72];
   size_t sum = 0;

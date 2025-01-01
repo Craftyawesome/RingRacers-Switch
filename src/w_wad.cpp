@@ -198,6 +198,9 @@ FILE *W_OpenWadFile(const char **filename, boolean useerrors)
 			return NULL;
 		}
 	}
+	#ifdef __SWITCH__
+	setvbuf(handle, NULL, _IOFBF, 32 * 1024);
+	#endif
 	return handle;
 }
 
