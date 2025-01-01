@@ -1085,7 +1085,9 @@ void I_OutputMsg(const char *fmt, ...)
 	if (logstream)
 	{
 		size_t d = fwrite(txt, len, 1, logstream);
+		#ifndef __SWITCH__ //too slow
 		fflush(logstream);
+		#endif
 		(void)d;
 	}
 #endif
@@ -2148,6 +2150,9 @@ void I_ShutdownSystem(void)
 	if (logstream)
 	{
 		I_OutputMsg("I_ShutdownSystem(): end of logstream.\n");
+#ifdef __SWITCH__
+		fflush(logstream);
+#endif
 #if !(defined (__unix__) || defined(__APPLE__) || defined (UNIXCOMMON))
 		Shittylogcopy();
 #endif
