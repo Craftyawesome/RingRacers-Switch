@@ -8839,7 +8839,12 @@ static boolean P_MobjRegularThink(mobj_t *mobj)
 								if (plistlen > 1)
 								{
 									// Pick another player in the server!
+									// Hack to work around second arg +1 being wrong
+									// Cannot be directly fixed in order to match rng call count.
+									i = plistlen;
 									plistlen = P_RandomKey(PR_SPARKLE, plistlen+1);
+									if (i == plistlen)
+										plistlen = 0; // This seems to match original behavior
 								}
 								else
 								{
