@@ -892,7 +892,9 @@ void I_OutputMsg(const char *fmt, ...)
 	if (logstream)
 	{
 		size_t d = fwrite(txt, len, 1, logstream);
+		#ifndef __SWITCH__ //too slow
 		fflush(logstream);
+		#endif
 		(void)d;
 	}
 #endif
