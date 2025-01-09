@@ -1390,19 +1390,19 @@ static void IdentifyVersion(void)
 	// if you change the ordering of this or add/remove a file, be sure to update the md5
 	// checking in D_SRB2Main
 
-	D_AddFile(startupiwads, va(pandf,srb2waddir,"scripts.pk3"));
-	D_AddFile(startupiwads, va(pandf,srb2waddir,"gfx.pk3"));
-	D_AddFile(startupiwads, va(pandf,srb2waddir,"textures_general.pk3"));
-	D_AddFile(startupiwads, va(pandf,srb2waddir,"textures_segazones.pk3"));
-	D_AddFile(startupiwads, va(pandf,srb2waddir,"textures_originalzones.pk3"));
-	D_AddFile(startupiwads, va(pandf,srb2waddir,"chars.pk3"));
-	D_AddFile(startupiwads, va(pandf,srb2waddir,"followers.pk3"));
-	D_AddFile(startupiwads, va(pandf,srb2waddir,"maps.pk3"));
-	D_AddFile(startupiwads, va(pandf,srb2waddir,"unlocks.pk3"));
-	D_AddFile(startupiwads, va(pandf,srb2waddir,"staffghosts.pk3"));
-	D_AddFile(startupiwads, va(pandf,srb2waddir,"shaders.pk3"));
+	D_AddFile(startupiwads, va(pandf,srb2waddir,"data/scripts.pk3"));
+	D_AddFile(startupiwads, va(pandf,srb2waddir,"data/gfx.pk3"));
+	D_AddFile(startupiwads, va(pandf,srb2waddir,"data/textures_general.pk3"));
+	D_AddFile(startupiwads, va(pandf,srb2waddir,"data/textures_segazones.pk3"));
+	D_AddFile(startupiwads, va(pandf,srb2waddir,"data/textures_originalzones.pk3"));
+	D_AddFile(startupiwads, va(pandf,srb2waddir,"data/chars.pk3"));
+	D_AddFile(startupiwads, va(pandf,srb2waddir,"data/followers.pk3"));
+	D_AddFile(startupiwads, va(pandf,srb2waddir,"data/maps.pk3"));
+	D_AddFile(startupiwads, va(pandf,srb2waddir,"data/unlocks.pk3"));
+	D_AddFile(startupiwads, va(pandf,srb2waddir,"data/staffghosts.pk3"));
+	D_AddFile(startupiwads, va(pandf,srb2waddir,"data/shaders.pk3"));
 #ifdef USE_PATCH_FILE
-	D_AddFile(startupiwads, va(pandf,srb2waddir,"patch.pk3"));
+	D_AddFile(startupiwads, va(pandf,srb2waddir,"data/patch.pk3"));
 #endif
 
 #define MUSICTEST(str) \
@@ -1418,9 +1418,9 @@ static void IdentifyVersion(void)
 			I_Error("File " str " has been modified with non-music/sound lumps"); \
 	}
 
-	MUSICTEST("sounds.pk3")
-	MUSICTEST("music.pk3")
-	MUSICTEST("altmusic.pk3")
+	MUSICTEST("data/sounds.pk3")
+	MUSICTEST("data/music.pk3")
+	MUSICTEST("data/altmusic.pk3")
 
 #undef MUSICTEST
 }
