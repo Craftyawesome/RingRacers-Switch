@@ -1885,7 +1885,7 @@ void I_RemoveExitFunc(void (*func)())
 	}
 }
 
-#if !(defined (__unix__) || defined(__APPLE__) || defined (UNIXCOMMON))
+#if defined (LOGMESSAGES) && !(defined (__unix__) || defined(__APPLE__) || defined (UNIXCOMMON))
 static void Shittycopyerror(const char *name)
 {
 	I_OutputMsg(
@@ -1925,7 +1925,7 @@ static void Shittylogcopy(void)
 		Shittycopyerror(logfilename);
 	}
 }
-#endif/*!(defined (__unix__) || defined(__APPLE__) || defined (UNIXCOMMON))*/
+#endif/*defined (LOGMESSAGES) && !(defined (__unix__) || defined(__APPLE__) || defined (UNIXCOMMON))*/
 
 //
 //  Closes down everything. This includes restoring the initial
