@@ -188,7 +188,9 @@ HMS_connect (const char *format, ...)
 	if (cv_masterserver_debug.value)
 	{
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+		#ifdef LOGMESSAGES
 		curl_easy_setopt(curl, CURLOPT_STDERR, logstream);
+		#endif
 	}
 
 	if (M_CheckParm("-bindaddr") && M_IsNextParm())
