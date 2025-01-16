@@ -31,6 +31,7 @@
 #include "k_color.h" // SRB2kart
 #include "i_threads.h"
 #include "libdivide.h" // used by NPO2 tilted span functions
+#include "hwr2/resource_management.hpp"
 
 #ifdef HWRENDER
 #include "hardware/hw_main.h"
@@ -375,8 +376,11 @@ UINT8* R_GetTranslationColormap(INT32 skinnum, skincolornum_t color, UINT8 flags
 		if (skincolor_modified[color])
 		{
 			for (i = 0; i < (INT32)(sizeof(translationtablecache) / sizeof(translationtablecache[0])); i++)
-				if (translationtablecache[i] && translationtablecache[i][color])
+				if (translationtablecache[i] && translationtablecache[i][color]) {
 					K_GenerateKartColormap(translationtablecache[i][color], CacheIndexToSkin(i), color);
+					if (cv_renderer.value == 1)
+						markColormapUpdate(translationtablecache[i][color]);	
+				}
 			skincolor_modified[color] = false;
 		}
 	}

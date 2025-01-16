@@ -15,6 +15,9 @@
 #include "../core/vector.hpp"
 #include "../rhi/rhi.hpp"
 
+#include <unordered_map>
+
+void markColormapUpdate(uint8_t* p);
 namespace srb2::hwr2
 {
 
