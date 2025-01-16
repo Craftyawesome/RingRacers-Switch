@@ -301,6 +301,10 @@ static void LoadPalette(const char *lumpname)
 	size_t i, palsize;
 	UINT8 *pal;
 
+	//This is called multiple times and also during map change, so it should never grow too big
+	extern int frameResourceClear;
+	frameResourceClear = 1;
+
 	currentPaletteSize = W_LumpLength(lumpnum);
 	palsize = currentPaletteSize / 3;
 

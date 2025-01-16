@@ -14,6 +14,8 @@
 #include "../v_video.h"
 #include "../z_zone.h"
 
+#include <unordered_set>
+
 using namespace srb2;
 using namespace rhi;
 using namespace hwr2;
@@ -90,8 +92,19 @@ void PaletteManager::update(Rhi& rhi, Handle<GraphicsContext> ctx)
 	}
 }
 
+std::unordered_set<const uint8_t*> toUpdate;
+void markColormapUpdate(uint8_t* p) {
+	toUpdate.insert(p);
+}
+
+int frameResourceClear = 0;
 void PaletteManager::destroy_per_frame_resources(Rhi& rhi)
 {
+	if (!frameResourceClear)
+		return;
+
+	toUpdate.clear();
+
 	for (auto colormap_tex : colormaps_)
 	{
 		rhi.destroy_texture(colormap_tex.second);
@@ -105,12 +118,18 @@ void PaletteManager::destroy_per_frame_resources(Rhi& rhi)
 	}
 
 	lighttables_.clear();
+	frameResourceClear = 0;
 }
 
 Handle<Texture> PaletteManager::find_or_create_colormap(Rhi& rhi, rhi::Handle<rhi::GraphicsContext> ctx, srb2::NotNull<const uint8_t*> colormap)
 {
 	if (colormaps_.find(colormap) != colormaps_.end())
 	{
+		if (toUpdate.find(colormap) != toUpdate.end()) {
+			toUpdate.erase(colormap);
+			tcb::span<const std::byte> map_bytes = tcb::as_bytes(tcb::span(colormap.get(), kPaletteSize));
+			rhi.update_texture(ctx, colormaps_[colormap], {0, 0, kPaletteSize, 1}, PixelFormat::kR8, map_bytes);
+		}
 		return colormaps_[colormap];
 	}
 
