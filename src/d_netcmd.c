@@ -2264,6 +2264,8 @@ void D_MapChange(UINT16 mapnum, INT32 newgametype, boolean pencoremode, boolean 
 		mapchangepending = 1;
 	else
 	{
+		extern int frameResourceClear;
+		frameResourceClear = 1;
 		mapchangepending = 0;
 		// spawn the server if needed
 		// reset players if there is a new one

@@ -15,6 +15,7 @@
 
 #include <unordered_map>
 
+void markColormapUpdate(uint8_t* p);
 namespace srb2::hwr2
 {
 
