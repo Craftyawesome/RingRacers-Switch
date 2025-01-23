@@ -4765,7 +4765,7 @@ static void PT_Say(int node)
 	DoSayCommand(say.message, say.target, say.flags, say.source);
 }
 
-static char NodeToSplitPlayer(int node, int split)
+static int8_t NodeToSplitPlayer(int node, int split)
 {
 	if (split == 0)
 		return nodetoplayer[node];
@@ -5386,7 +5386,7 @@ static void HandlePacketFromPlayer(SINT8 node)
 			for (responseplayer = 0; responseplayer < MAXSPLITSCREENPLAYERS; responseplayer++)
 			{
 				int targetplayer = NodeToSplitPlayer(node, responseplayer);
-				if (targetplayer == -1 || targetplayer == 255)
+				if (targetplayer == -1)
 					continue;
 
 				if (!IsPlayerGuest(targetplayer))
