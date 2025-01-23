@@ -1950,6 +1950,9 @@ void I_ShutdownSystem(void)
 	if (logstream)
 	{
 		I_OutputMsg("I_ShutdownSystem(): end of logstream.\n");
+#ifdef __SWITCH__
+		fflush(logstream);
+#endif
 #if !(defined (__unix__) || defined(__APPLE__) || defined (UNIXCOMMON))
 		Shittylogcopy();
 #endif

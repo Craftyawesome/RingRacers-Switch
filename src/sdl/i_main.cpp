@@ -329,6 +329,17 @@ extern "C" void userAppExit()
 	socketExit(); // nxlink does this, needed for online support
 	#endif
 }
+
+#ifdef LOGMESSAGES
+extern "C" void __libnx_exception_handler(ThreadExceptionDump *ctx)
+{
+	if (logstream) {
+		fflush(logstream);
+		fclose(logstream);
+	}
+}
+#endif
+
 #endif
 
 // ============================================================================
