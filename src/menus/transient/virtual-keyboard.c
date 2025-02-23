@@ -273,75 +273,77 @@ void M_MenuTypingInput(INT32 key)
 		}
 	}
 
-	if (menucmd[pid].delay == 0 && !menutyping.keyboardtyping)	// We must check for this here because we bypass the normal delay check to allow for normal keyboard inputs
+	if (!menutyping.keyboardtyping)	// We must check for this here because we bypass the normal delay check to allow for normal keyboard inputs
 	{
-		if (menucmd[pid].dpad_ud > 0)	// down
-		{
-			menutyping.keyboardy++;
-			if (menutyping.keyboardy > 4)
-				menutyping.keyboardy = 0;
-
-			M_SetMenuDelay(pid);
-			S_StartSound(NULL, sfx_s3k5b);
-		}
-		else if (menucmd[pid].dpad_ud < 0) // up
-		{
-			menutyping.keyboardy--;
-			if (menutyping.keyboardy < 0)
-				menutyping.keyboardy = 4;
-
-			M_SetMenuDelay(pid);
-			S_StartSound(NULL, sfx_s3k5b);
-		}
-		else if (menucmd[pid].dpad_lr > 0)	// right
-		{
-			do
+		if (menucmd[pid].delay == 0) {
+			if (menucmd[pid].dpad_ud > 0)	// down
 			{
-				menutyping.keyboardx++;
-				if (menutyping.keyboardx > NUMVIRTUALKEYSINROW-1)
-				{
-					menutyping.keyboardx = 0;
-					break;
-				}
+				menutyping.keyboardy++;
+				if (menutyping.keyboardy > 4)
+					menutyping.keyboardy = 0;
+
+				M_SetMenuDelay(pid);
+				S_StartSound(NULL, sfx_s3k5b);
 			}
-			while (virtualKeyboard[menutyping.keyboardy][menutyping.keyboardx] == 1);
-
-			M_SetMenuDelay(pid);
-			S_StartSound(NULL, sfx_s3k5b);
-		}
-		else if (menucmd[pid].dpad_lr < 0)	// left
-		{
-			while (virtualKeyboard[menutyping.keyboardy][menutyping.keyboardx] == 1)
+			else if (menucmd[pid].dpad_ud < 0) // up
 			{
+				menutyping.keyboardy--;
+				if (menutyping.keyboardy < 0)
+					menutyping.keyboardy = 4;
+
+				M_SetMenuDelay(pid);
+				S_StartSound(NULL, sfx_s3k5b);
+			}
+			else if (menucmd[pid].dpad_lr > 0)	// right
+			{
+				do
+				{
+					menutyping.keyboardx++;
+					if (menutyping.keyboardx > NUMVIRTUALKEYSINROW-1)
+					{
+						menutyping.keyboardx = 0;
+						break;
+					}
+				}
+				while (virtualKeyboard[menutyping.keyboardy][menutyping.keyboardx] == 1);
+
+				M_SetMenuDelay(pid);
+				S_StartSound(NULL, sfx_s3k5b);
+			}
+			else if (menucmd[pid].dpad_lr < 0)	// left
+			{
+				while (virtualKeyboard[menutyping.keyboardy][menutyping.keyboardx] == 1)
+				{
+					menutyping.keyboardx--;
+					if (menutyping.keyboardx < 0)
+					{
+						menutyping.keyboardx = NUMVIRTUALKEYSINROW-1;
+						break;
+					}
+				}
+
 				menutyping.keyboardx--;
 				if (menutyping.keyboardx < 0)
 				{
 					menutyping.keyboardx = NUMVIRTUALKEYSINROW-1;
-					break;
 				}
-			}
 
-			menutyping.keyboardx--;
-			if (menutyping.keyboardx < 0)
+				M_SetMenuDelay(pid);
+				S_StartSound(NULL, sfx_s3k5b);
+			}
+			else if (M_MenuBackHeld(pid))
 			{
-				menutyping.keyboardx = NUMVIRTUALKEYSINROW-1;
-			}
+				// Shortcut for backspace.
+				M_ChangeStringCvar(KEY_BACKSPACE);
 
-			M_SetMenuDelay(pid);
-			S_StartSound(NULL, sfx_s3k5b);
+				M_SetMenuDelay(pid);
+				S_StartSound(NULL, sfx_s3k5b);
+			}
 		}
-		else if (M_MenuButtonPressed(pid, MBT_START))
+		if (M_MenuButtonPressed(pid, MBT_START))
 		{
 			// Shortcut for close menu.
 			M_CloseVirtualKeyboard();
-
-			M_SetMenuDelay(pid);
-			S_StartSound(NULL, sfx_s3k5b);
-		}
-		else if (M_MenuBackPressed(pid))
-		{
-			// Shortcut for backspace.
-			M_ChangeStringCvar(KEY_BACKSPACE);
 
 			M_SetMenuDelay(pid);
 			S_StartSound(NULL, sfx_s3k5b);
@@ -351,7 +353,6 @@ void M_MenuTypingInput(INT32 key)
 			// Shortcut for shift/caps lock.
 			M_ToggleVirtualShift();
 
-			M_SetMenuDelay(pid);
 			S_StartSound(NULL, sfx_s3k5b);
 		}
 		else if (M_MenuConfirmPressed(pid))
@@ -382,7 +383,6 @@ void M_MenuTypingInput(INT32 key)
 					menutyping.keyboardshift = false;			// undo shift if it had been pressed
 				}
 
-				M_SetMenuDelay(pid);
 				S_StartSound(NULL, sfx_s3k5b);
 			}
 		}
