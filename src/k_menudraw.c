@@ -482,9 +482,13 @@ void M_DrawMenuForeground(void)
 	{
 		M_DrawMenuParty();
 	}
-
+/*
+	printf("%s, %s, %d\n", currentMenu->prevMenu == NULL ? "NULL" : "nonNULL",
+		currentMenu == &ChatEntryDef ? "isChat" : "isn'tChat",
+		menuactive);
+*/
 	// draw non-green resolution border
-	if ((!menuactive || currentMenu != &PAUSE_PlaybackMenuDef) && // this obscures replay menu and I want to put in minimal effort to fix that
+	if ((!menuactive || (currentMenu != &PAUSE_PlaybackMenuDef && currentMenu != &ChatEntryDef) /* || gamestate == GS_INTERMISSION || gamestate == GS_VOTING */) && // this obscures replay menu and I want to put in minimal effort to fix that
 		((vid.width % BASEVIDWIDTH != 0) || (vid.height % BASEVIDHEIGHT != 0)))
 	{
 		V_DrawFixedPatch(0, 0, FRACUNIT, 0, W_CachePatchName("WEIRDRES", PU_CACHE), NULL);
@@ -531,18 +535,19 @@ static void M_DrawMenuTyping(void)
 
 	char buf[8];	// We write there to use drawstring for convenience.
 
-	V_DrawFadeScreen(31, (menutyping.menutypingfade+1)/2);
-
 	// Draw the string we're editing at the top.
 
 	const INT32 boxwidth = (8*(MAXSTRINGLENGTH + 1)) + 7;
 	x = (BASEVIDWIDTH - boxwidth)/2;
-	y = 80;
+	//y = 80;
+	y = currentMenu == &ChatEntryDef ? 124 + (vid.height % BASEVIDHEIGHT)/2/vid.dupy : 80;
 	if (menutyping.menutypingfade < 9)
 		y += floor(pow(2, (double)(9 - menutyping.menutypingfade)));
 	else
 		y += (9-menutyping.menutypingfade);
 
+	if (currentMenu != &ChatEntryDef) {
+	V_DrawFadeScreen(31, (menutyping.menutypingfade+1)/2);
 	if (currentMenu->menuitems[itemOn].text)
 	{
 		V_DrawThinString(x + 5, y - 2, highlightflags, currentMenu->menuitems[itemOn].text);
@@ -565,6 +570,7 @@ static void M_DrawMenuTyping(void)
 		&& menutyping.menutypingfade == (menutyping.keyboardtyping ? 9 : 18))
 	{
 		V_DrawCharacter(x + 8 + textwidth, y + 12 + 1, '_', false);
+	}
 	}
 
 	const INT32 buttonwidth = ((boxwidth + 1)/NUMVIRTUALKEYSINROW);
@@ -730,6 +736,7 @@ static void M_DrawMenuTyping(void)
 
 #undef BUTTONHEIGHT
 
+	if (currentMenu != &ChatEntryDef) {
 	y = 187;
 
 	if (menutyping.menutypingfade < 9)
@@ -751,6 +758,7 @@ static void M_DrawMenuTyping(void)
 			"Type using the Virtual Keyboard. Use the \'OK\' button to confirm & exit."
 			//"\nPress any keyboard key to type normally."
 		);
+	}
 	}
 
 }
@@ -978,7 +986,7 @@ void M_Drawer(void)
 			{
 				M_DrawGonerBack();
 			}
-			else if (!WipeInAction && currentMenu != &PAUSE_PlaybackMenuDef)
+			else if (!WipeInAction && currentMenu != &PAUSE_PlaybackMenuDef && currentMenu != &ChatEntryDef)
 			{
 				V_DrawFadeScreen(122, 3);
 			}

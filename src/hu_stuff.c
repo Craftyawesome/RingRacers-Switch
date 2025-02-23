@@ -1105,6 +1105,48 @@ void HU_clearChatChars(void)
 	I_UpdateMouseGrab();
 }
 
+static const char* chat_callback(const char* replace) {
+    if (replace) {
+        strlcpy(w_chat, replace, sizeof(w_chat));
+    }
+    return w_chat;
+}
+
+static boolean quitChat(void) {
+	if (!CHAT_MUTE)
+		HU_sendChatMessage();
+
+	chat_on = false;
+	c_input = 0; // reset input cursor
+	chat_scrollmedown = true; // you hit enter, so you might wanna autoscroll to see what you just sent. :)
+	I_UpdateMouseGrab();
+	return true;
+}
+
+menuitem_t ChatEntry[] =
+{
+	//{IT_NOTHING | IT_SPACE, "Enter Message", NULL,
+	//	NULL, {NULL}, 0, 0},
+	{0}
+};
+menu_t ChatEntryDef = {
+	sizeof (ChatEntry) / sizeof (menuitem_t),
+	NULL,
+	0,
+	ChatEntry,
+	0, 0,
+	0, 0,
+	MBF_SOUNDLESS,
+	NULL,
+	0, 0,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	quitChat,
+	NULL
+};
+
 //
 // Returns true if key eaten
 //
@@ -1155,6 +1197,9 @@ boolean HU_Responder(event_t *ev)
 			teamtalk = false;
 			chat_scrollmedown = true;
 			typelines = 1;
+
+			M_OpenVirtualKeyboard(sizeof w_chat, chat_callback, &ChatEntryDef);
+
 			return true;
 		}
 		if ((ev->data1 == gamecontrol[0][gc_teamtalk][0] || ev->data1 == gamecontrol[0][gc_teamtalk][1]
@@ -1449,7 +1494,7 @@ static void HU_drawChatLog(INT32 offset)
 	}
 #endif
 
-	y = chaty - offset*charheight - (chat_scroll*charheight) - boxh*charheight - 12;
+	y = chaty - offset*charheight - (chat_scroll*charheight) - boxh*charheight - 12 - 14;
 
 #ifdef NETSPLITSCREEN
 	if (r_splitscreen)
@@ -1567,7 +1612,7 @@ static void HU_DrawChat(void)
 {
 	const INT32 charheight = (vid.width < 640) ? 12 : 6;
 	INT32 boxw = cv_chatwidth.value;
-	INT32 y = chaty;
+	INT32 y = chaty - 14;
 	UINT32 i = 0;
 	char cflag = '\x80', tflag = '\x80';
 	const char *ntalk = "Say: ", *ttalk = "Team: ";

@@ -583,6 +583,7 @@ typedef enum
 
 extern menuitem_t PAUSE_PlaybackMenu[];
 extern menu_t PAUSE_PlaybackMenuDef;
+extern menu_t ChatEntryDef;
 
 typedef enum
 {
@@ -632,7 +633,7 @@ extern struct menutyping_s
 	boolean keyboardcapslock;
 	boolean keyboardshift;
 
-	vkb_query_fn_t queryfn; // callback on open and close
+	vkb_query_fn_t queryfn; // callback on change
 	menu_t *dummymenu;
 	size_t cachelen;
 	char *cache; // cached string

@@ -126,6 +126,7 @@ boolean M_ChangeStringCvar(INT32 choice)
 				}
 			}
 
+			menutyping.queryfn(menutyping.cache);
 			return true;
 		}
 
@@ -140,6 +141,7 @@ boolean M_ChangeStringCvar(INT32 choice)
 			{
 				len = strlen(menutyping.cache);
 				menutyping.cache[len - 1] = 0;
+				menutyping.queryfn(menutyping.cache);
 
 				S_StartSound(NULL, sfx_tmxbup); // Tails
 			}
@@ -148,6 +150,7 @@ boolean M_ChangeStringCvar(INT32 choice)
 			if (menutyping.cache[0])
 			{
 				strcpy(menutyping.cache, "");
+				menutyping.queryfn(menutyping.cache);
 
 				S_StartSound(NULL, sfx_tmxbup); // Tails
 			}
@@ -160,6 +163,7 @@ boolean M_ChangeStringCvar(INT32 choice)
 				{
 					menutyping.cache[len++] = (char)choice;
 					menutyping.cache[len] = 0;
+					menutyping.queryfn(menutyping.cache);
 
 					S_StartSound(NULL, sfx_tmxbdn); // Tails
 				}
