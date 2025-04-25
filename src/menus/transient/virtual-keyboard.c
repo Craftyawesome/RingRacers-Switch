@@ -404,11 +404,14 @@ void M_OpenVirtualKeyboard(size_t cachelen, vkb_query_fn_t queryfn, menu_t *dumm
 	{
 		if (!menuactive)
 		{
+			printf("notActive\n");
 			M_StartControlPanel();
 			dummymenu->prevMenu = NULL;
 		}
-		else
+		else {
+			printf("Active\n");
 			dummymenu->prevMenu = currentMenu;
+		}
 
 		M_SetupNextMenu(dummymenu, true);
 	}
